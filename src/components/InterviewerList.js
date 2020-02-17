@@ -16,7 +16,7 @@ const InterviewerList = ({ interviewers, value, setInterviewer }) => {
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
-      <ul className="interviewers_list">{listItem}</ul>
+      <ul className="interviewers__list">{listItem}</ul>
     </section>
   );
 };

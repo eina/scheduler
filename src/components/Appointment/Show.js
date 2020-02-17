@@ -16,13 +16,13 @@ const Show = props => {
             className="appointment__actions-button"
             src="images/edit.png"
             alt="Edit"
-            onEdit={props.onEdit}
+            onClick={props.onEdit}
           />
           <img
             className="appointment__actions-button"
             src="images/trash.png"
             alt="Delete"
-            onDelete={props.onDelete}
+            onClick={props.onDelete}
           />
         </section>
       </section>
