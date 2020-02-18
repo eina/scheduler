@@ -10,3 +10,12 @@ export const getAppointmentsForDay = (state, day) => {
     return [];
   }
 };
+
+export const getInterview = (state, interview) => {
+  if (interview) {
+    const { student, interviewer } = interview;
+    return { student, interviewer: state.interviewers[interviewer] };
+  } else {
+    return null;
+  }
+};
