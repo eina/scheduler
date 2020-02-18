@@ -1,9 +1,9 @@
 import React from "react";
 
 const ListItem = props => {
-  const itemClass = `list__item ${props.selected ? "list_item--selected" : ""}`;
+  // const itemClass = `list__item ${props.selected ? "list__item--selected" : ""}`;
   return (
-    <li className={itemClass} onClick={props.setItem}>
+    <li className={props.itemClass} onClick={props.setItem}>
       {props.label}
     </li>
   );
