@@ -1,17 +1,19 @@
 import React from "react";
 import ListItem from "./ListItem";
 
-const List = props => {
-  const items = props.items.map(item => {
-    <ListItem
-      key={item.id}
-      label={item.label}
-      selected={item.id === props.value}
-      setItem={e => props.onChange(item.id)}
-    />;
-  });
-
-  return <ul>{items}</ul>;
+const List = ({ items, value, onChange }) => {
+  return (
+    <ul>
+      {items.map(item => {
+        <ListItem
+          key={item.id}
+          selected={item.id === value}
+          setItem={e => onChange(item.id)}
+          {...item}
+        />;
+      })}
+    </ul>
+  );
 };
 
 export default List;

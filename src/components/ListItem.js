@@ -4,7 +4,7 @@ const ListItem = props => {
   // const itemClass = `list__item ${props.selected ? "list__item--selected" : ""}`;
   return (
     <li className={props.itemClass} onClick={props.setItem}>
-      {props.label}
+      {props.children}
     </li>
   );
 };
