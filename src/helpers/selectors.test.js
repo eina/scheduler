@@ -5,12 +5,14 @@ const state = {
     {
       id: 1,
       name: "Monday",
-      appointments: [1, 2, 3]
+      appointments: [1, 2, 3],
+      interviewers: [1]
     },
     {
       id: 2,
       name: "Tuesday",
-      appointments: [4, 5]
+      appointments: [4, 5],
+      interviewers: [1, 2]
     }
   ],
   appointments: {
@@ -21,7 +23,7 @@ const state = {
       time: "2pm",
       interview: { student: "Archie Cohen", interviewer: 2 }
     },
-    "4": { id: 4, time: "3pm", interview: { student: "Matt Mercer", interviewer: 2 } },
+    "4": { id: 4, time: "3pm", interview: null },
     "5": {
       id: 5,
       time: "4pm",
@@ -73,14 +75,14 @@ test("getInterviewersForDay returns an array", () => {
   expect(Array.isArray(result)).toBe(true);
 });
 
-test("getInterviewersForDay returns an array with a length matching the number of appointments for that day", () => {
+test("getInterviewersForDay returns an array with a length matching the number of interviewer for that day", () => {
   const result = getInterviewersForDay(state, "Monday");
-  expect(result.length).toEqual(3);
+  expect(result.length).toEqual(1);
 });
 
-test("getInterviewersForDay returns an array containing the correct appointment objects", () => {
+test("getInterviewersForDay returns an array containing the correct interviewer objects", () => {
   const [first, second] = getInterviewersForDay(state, "Tuesday");
-  expect(first).toEqual(state.interviewers["2"]);
+  expect(first).toEqual(state.interviewers["1"]);
   expect(second).toEqual(state.interviewers["2"]);
 });
 
