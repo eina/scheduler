@@ -55,6 +55,7 @@ export default function Application(props) {
             appointments
           });
         }
+        return res;
       })
       .catch(err => console.error(err));
   };
