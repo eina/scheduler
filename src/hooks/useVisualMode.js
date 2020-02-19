@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const useVisualMode = initial => {
   const [mode, setMode] = useState(initial);
@@ -12,13 +12,9 @@ const useVisualMode = initial => {
   };
 
   const back = () => {
-    if (mode !== initial) {
-      const backHistory = history.slice(0, -1);
-      setMode(backHistory[backHistory.length - 1]);
-      setHistory(backHistory);
-    } else {
-      setMode(initial);
-    }
+    const backHistory = history.slice(0, -1);
+    setMode(mode !== initial ? backHistory[backHistory.length - 1] : initial);
+    setHistory(mode !== initial ? backHistory : [initial]);
   };
 
   return { mode, transition, back };
