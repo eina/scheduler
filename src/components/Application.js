@@ -46,17 +46,10 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    // setState({
-    //   ...state,
-    //   appointments
-    // });
-
     return axios
       .put(`/api/appointments/${id}`, appointment)
       .then(res => {
-        console.log("in the res after setting appointment!", res);
         if (res.status === 204) {
-          console.log("wow correct status! set state now!");
           setState({
             ...state,
             appointments

@@ -24,10 +24,7 @@ const Appointment = props => {
       student: name,
       interviewer
     };
-    // props.bookIntervew(props.id, interview);
-    // transition(SHOW);
     props.bookIntervew(props.id, interview).then(() => {
-      console.log("i got to bookInterview!");
       transition(SHOW);
     });
   };
