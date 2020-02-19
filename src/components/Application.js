@@ -15,7 +15,6 @@ export default function Application(props) {
     appointments: {},
     interviewers: {}
   });
-
   const setDay = day => setState({ ...state, day });
 
   useEffect(() => {
