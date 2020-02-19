@@ -36,7 +36,6 @@ export default function Application(props) {
   const interviewers = getInterviewersForDay(state, state.day);
 
   const bookInterview = (id, interview) => {
-    // console.log(state.appointments[id], interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -47,10 +46,24 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    setState({
-      ...state,
-      appointments
-    });
+    // setState({
+    //   ...state,
+    //   appointments
+    // });
+
+    return axios
+      .put(`/api/appointments/${id}`, appointment)
+      .then(res => {
+        console.log("in the res after setting appointment!", res);
+        if (res.status === 204) {
+          console.log("wow correct status! set state now!");
+          setState({
+            ...state,
+            appointments
+          });
+        }
+      })
+      .catch(err => console.error(err));
   };
 
   return (
