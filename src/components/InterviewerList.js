@@ -3,7 +3,6 @@ import "./InterviewerList.scss";
 import InterviewerListItem from "./InterviewerListItem";
 
 const InterviewerList = ({ interviewers, value, onChange }) => {
-  console.log("wtf", interviewers);
   const listItem = interviewers.map(x => {
     if (x) {
       return (

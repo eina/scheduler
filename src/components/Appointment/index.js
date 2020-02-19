@@ -25,9 +25,8 @@ const Appointment = props => {
       interviewer
     };
     props.bookIntervew(props.id, interview);
+    transition(SHOW);
   };
-
-  console.log("wtf", props.interviewers);
 
   return (
     <article className="appointment">
