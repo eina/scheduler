@@ -63,12 +63,6 @@ const useApplicationData = initial => {
         type: SET_APPLICATION_DATA,
         value: { days: all[0].data, appointments: all[1].data, interviewers: all[2].data }
       });
-      // setState(prev => ({
-      //   ...prev,
-      //   days: all[0].data,
-      //   appointments: all[1].data,
-      //   interviewers: all[2].data
-      // }));
     });
   }, []);
 
@@ -80,10 +74,6 @@ const useApplicationData = initial => {
     return axios.put(`/api/appointments/${id}`, appointment).then(res => {
       if (res && res.status === 204) {
         dispatch({ type: SET_INTERVIEW, value: { id, interview } });
-        // setState({
-        //   ...state,
-        //   appointments
-        // });
       }
       return res;
     });
@@ -93,10 +83,6 @@ const useApplicationData = initial => {
     return axios.delete(`/api/appointments/${id}`).then(res => {
       if (res && res.status === 204) {
         dispatch({ type: SET_INTERVIEW, value: { id, interview: null } });
-        // setState({
-        //   ...state,
-        //   appointments
-        // });
         return res;
       }
     });
