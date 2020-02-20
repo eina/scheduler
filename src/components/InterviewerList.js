@@ -4,17 +4,15 @@ import InterviewerListItem from "./InterviewerListItem";
 
 const InterviewerList = ({ interviewers, value, onChange }) => {
   const listItem = interviewers.map(x => {
-    if (x) {
-      return (
-        <InterviewerListItem
-          key={x.id}
-          name={x.name}
-          avatar={x.avatar}
-          selected={x.id === value}
-          setInterviewer={e => onChange(x.id)}
-        />
-      );
-    }
+    return (
+      <InterviewerListItem
+        key={x.id}
+        name={x.name}
+        avatar={x.avatar}
+        selected={x.id === value}
+        setInterviewer={e => onChange(x.id)}
+      />
+    );
   });
 
   return (

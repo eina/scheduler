@@ -13,8 +13,8 @@ const useVisualMode = initial => {
 
   const back = () => {
     const backHistory = history.slice(0, -1);
-    setMode(mode !== initial ? backHistory[backHistory.length - 1] : initial);
     setHistory(mode !== initial ? backHistory : [initial]);
+    setMode(mode !== initial ? backHistory[backHistory.length - 1] : initial);
   };
 
   return { mode, transition, back };

@@ -46,18 +46,15 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    return axios
-      .put(`/api/appointments/${id}`, appointment)
-      .then(res => {
-        if (res && res.status === 204) {
-          setState({
-            ...state,
-            appointments
-          });
-        }
-        return res;
-      })
-      .catch(err => console.error(err));
+    return axios.put(`/api/appointments/${id}`, appointment).then(res => {
+      if (res && res.status === 204) {
+        setState({
+          ...state,
+          appointments
+        });
+      }
+      return res;
+    });
   };
 
   const cancelInterview = id => {
@@ -80,10 +77,6 @@ export default function Application(props) {
         return res;
       }
     });
-  };
-
-  const editInterview = () => {
-    // console.log(state.appointments[id]);
   };
 
   return (
@@ -112,7 +105,6 @@ export default function Application(props) {
                 interviewers={interviewers}
                 bookIntervew={bookInterview}
                 cancelInterview={() => cancelInterview(appointment.id)}
-                editInterview={editInterview}
               />
             );
           })}
