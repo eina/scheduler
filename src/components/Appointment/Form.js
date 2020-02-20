@@ -17,8 +17,6 @@ const Form = props => {
     reset();
   };
 
-  console.log("interviewer what are you", interviewer);
-
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
