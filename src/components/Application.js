@@ -60,6 +60,23 @@ export default function Application(props) {
       .catch(err => console.error(err));
   };
 
+  const cancelInterview = apptID => {
+    const appointment = {
+      ...state.appointments[apptID],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [apptID]: appointment
+    };
+
+    setState({
+      ...state,
+      appointments
+    });
+  };
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -75,7 +92,6 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
         <ul>
           {appointments.map(appointment => {
             const interview = getInterview(state, appointment.interview);
@@ -86,6 +102,7 @@ export default function Application(props) {
                 interview={interview}
                 interviewers={interviewers}
                 bookIntervew={bookInterview}
+                cancelInterview={() => cancelInterview(appointment.id)}
               />
             );
           })}
