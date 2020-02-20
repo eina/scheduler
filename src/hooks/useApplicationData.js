@@ -6,6 +6,7 @@ import axios from "axios";
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
+const UPDATE_SPOTS = "UPDATE_SPOTS";
 
 const reducer = (state, action) => {
   const { value } = action;
@@ -22,20 +23,59 @@ const reducer = (state, action) => {
       };
     }
     case SET_INTERVIEW: {
+      const apptID = value.id;
       const appointment = {
-        ...state.appointments[value.id],
+        ...state.appointments[apptID],
         interview: value.interview
       };
 
       const appointments = {
         ...state.appointments,
-        [value.id]: appointment
+        [apptID]: appointment
       };
-
       return {
         ...state,
         appointments
       };
+    }
+    case UPDATE_SPOTS: {
+      const dayToUpdate = state.days.find(d => d.name === state.day);
+      const { appointments } = dayToUpdate;
+      // => [{}]
+      // find in appointments, the value.id
+      const isInAppointments = appointments.find(el => el === value.id);
+
+      // appointment id => value.id
+      // interview object??? => value.interview
+      console.log("what fam", { dayToUpdate, isInAppointments, value });
+
+      if (isInAppointments && value.interview) {
+        return {
+          ...state,
+          days: state.days.map(day => {
+            if (day.name !== state.day) {
+              return day;
+            }
+            return {
+              ...day,
+              spots: day.spots - 1
+            };
+          })
+        };
+      } else {
+        return {
+          ...state,
+          days: state.days.map(day => {
+            if (day.name !== state.day) {
+              return day;
+            }
+            return {
+              ...day,
+              spots: day.spots + 1
+            };
+          })
+        };
+      }
     }
     default:
       throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
@@ -74,6 +114,7 @@ const useApplicationData = initial => {
     return axios.put(`/api/appointments/${id}`, appointment).then(res => {
       if (res && res.status === 204) {
         dispatch({ type: SET_INTERVIEW, value: { id, interview } });
+        dispatch({ type: UPDATE_SPOTS, value: { id, interview } });
       }
       return res;
     });
@@ -83,6 +124,7 @@ const useApplicationData = initial => {
     return axios.delete(`/api/appointments/${id}`).then(res => {
       if (res && res.status === 204) {
         dispatch({ type: SET_INTERVIEW, value: { id, interview: null } });
+        dispatch({ type: UPDATE_SPOTS, value: { id, interview: null } });
         return res;
       }
     });
