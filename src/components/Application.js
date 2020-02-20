@@ -49,7 +49,7 @@ export default function Application(props) {
     return axios
       .put(`/api/appointments/${id}`, appointment)
       .then(res => {
-        if (res.status === 204) {
+        if (res && res.status === 204) {
           setState({
             ...state,
             appointments
@@ -71,9 +71,14 @@ export default function Application(props) {
       [apptID]: appointment
     };
 
-    setState({
-      ...state,
-      appointments
+    return axios.delete(`/api/appointments/${apptID}`).then(res => {
+      if (res && res.status === 204) {
+        setState({
+          ...state,
+          appointments
+        });
+        return res;
+      }
     });
   };
 

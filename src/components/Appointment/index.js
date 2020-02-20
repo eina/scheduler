@@ -41,8 +41,9 @@ const Appointment = props => {
 
   const deleteAppointment = () => {
     transition(DELETING);
-    props.cancelInterview();
-    transition(EMPTY);
+    props.cancelInterview().then(data => {
+      transition(EMPTY);
+    });
   };
 
   return (
