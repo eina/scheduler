@@ -60,18 +60,18 @@ export default function Application(props) {
       .catch(err => console.error(err));
   };
 
-  const cancelInterview = apptID => {
+  const cancelInterview = id => {
     const appointment = {
-      ...state.appointments[apptID],
+      ...state.appointments[id],
       interview: null
     };
 
     const appointments = {
       ...state.appointments,
-      [apptID]: appointment
+      [id]: appointment
     };
 
-    return axios.delete(`/api/appointments/${apptID}`).then(res => {
+    return axios.delete(`/api/appointments/${id}`).then(res => {
       if (res && res.status === 204) {
         setState({
           ...state,
@@ -80,6 +80,10 @@ export default function Application(props) {
         return res;
       }
     });
+  };
+
+  const editInterview = () => {
+    // console.log(state.appointments[id]);
   };
 
   return (
@@ -108,6 +112,7 @@ export default function Application(props) {
                 interviewers={interviewers}
                 bookIntervew={bookInterview}
                 cancelInterview={() => cancelInterview(appointment.id)}
+                editInterview={editInterview}
               />
             );
           })}

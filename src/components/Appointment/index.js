@@ -14,6 +14,7 @@ const Appointment = props => {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
+  const EDIT = "EDIT";
   const SAVING = "SAVING";
   const DELETING = "DELETING";
   const CONFIRM = "CONFIRM";
@@ -46,6 +47,12 @@ const Appointment = props => {
     });
   };
 
+  const edit = () => {
+    transition(EDIT);
+    props.editInterview();
+    // console.log("what are the props here", props);
+  };
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -54,6 +61,7 @@ const Appointment = props => {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onEdit={edit}
           onDelete={confirmDelete}
         />
       )}
@@ -67,6 +75,15 @@ const Appointment = props => {
       )}
       {mode === DELETING && <Status message="Deleting" />}
       {mode === CREATE && <Form interviewers={props.interviewers} onCancel={back} onSave={save} />}
+      {mode === EDIT && (
+        <Form
+          interviewers={props.interviewers}
+          name={props.interview.student}
+          interviewer={props.interview.interviewer.id}
+          onCancel={back}
+          onSave={save}
+        />
+      )}
     </article>
   );
 };
