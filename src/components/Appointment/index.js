@@ -50,7 +50,6 @@ const Appointment = props => {
   const edit = () => {
     transition(EDIT);
     props.editInterview();
-    // console.log("what are the props here", props);
   };
 
   return (
