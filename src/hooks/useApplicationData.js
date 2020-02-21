@@ -6,7 +6,6 @@ import axios from "axios";
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
-const UPDATE_SPOTS = "UPDATE_SPOTS";
 
 const reducer = (state, action) => {
   const { value } = action;
@@ -24,6 +23,20 @@ const reducer = (state, action) => {
     }
     case SET_INTERVIEW: {
       const apptID = value.id;
+      const updateSpots = spots => {
+        const currApptInterview = state.appointments[value.id].interview;
+        if (currApptInterview === null && value.interview) {
+          // create: null && interview is not null
+          return spots - 1;
+        } else if (currApptInterview !== null && value.interview === null) {
+          // delete: not null && null
+          return spots + 1;
+        } else {
+          // edit: not null && not null
+          return spots;
+        }
+      };
+
       const appointment = {
         ...state.appointments[apptID],
         interview: value.interview
@@ -33,49 +46,20 @@ const reducer = (state, action) => {
         ...state.appointments,
         [apptID]: appointment
       };
+
       return {
         ...state,
-        appointments
+        appointments,
+        days: state.days.map(day => {
+          if (day.name !== state.day) {
+            return day;
+          }
+          return {
+            ...day,
+            spots: updateSpots(day.spots)
+          };
+        })
       };
-    }
-    case UPDATE_SPOTS: {
-      const dayToUpdate = state.days.find(d => d.name === state.day);
-      const { appointments } = dayToUpdate;
-      // => [{}]
-      // find in appointments, the value.id
-      const isInAppointments = appointments.find(el => el === value.id);
-
-      // appointment id => value.id
-      // interview object??? => value.interview
-      console.log("what fam", { dayToUpdate, isInAppointments, value });
-
-      if (isInAppointments && value.interview) {
-        return {
-          ...state,
-          days: state.days.map(day => {
-            if (day.name !== state.day) {
-              return day;
-            }
-            return {
-              ...day,
-              spots: day.spots - 1
-            };
-          })
-        };
-      } else {
-        return {
-          ...state,
-          days: state.days.map(day => {
-            if (day.name !== state.day) {
-              return day;
-            }
-            return {
-              ...day,
-              spots: day.spots + 1
-            };
-          })
-        };
-      }
     }
     default:
       throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
@@ -113,8 +97,8 @@ const useApplicationData = initial => {
     };
     return axios.put(`/api/appointments/${id}`, appointment).then(res => {
       if (res && res.status === 204) {
-        dispatch({ type: SET_INTERVIEW, value: { id, interview } });
-        dispatch({ type: UPDATE_SPOTS, value: { id, interview } });
+        const dispatchValue = { id, interview };
+        dispatch({ type: SET_INTERVIEW, value: dispatchValue });
       }
       return res;
     });
@@ -123,8 +107,8 @@ const useApplicationData = initial => {
   const cancelInterview = id => {
     return axios.delete(`/api/appointments/${id}`).then(res => {
       if (res && res.status === 204) {
-        dispatch({ type: SET_INTERVIEW, value: { id, interview: null } });
-        dispatch({ type: UPDATE_SPOTS, value: { id, interview: null } });
+        const dispatchValue = { id, interview: null };
+        dispatch({ type: SET_INTERVIEW, value: dispatchValue });
         return res;
       }
     });
