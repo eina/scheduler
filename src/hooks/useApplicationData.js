@@ -24,16 +24,11 @@ const reducer = (state, action) => {
     case SET_INTERVIEW: {
       const apptID = value.id;
       const updateSpots = spots => {
-        const currApptInterview = state.appointments[value.id].interview;
-        if (currApptInterview === null && value.interview) {
-          // create: null && interview is not null
-          return spots - 1;
-        } else if (currApptInterview !== null && value.interview === null) {
-          // delete: not null && null
-          return spots + 1;
+        if (value.interview) {
+          // value.isEdit is only available during create/edit
+          return value.isEdit ? spots : spots - 1;
         } else {
-          // edit: not null && not null
-          return spots;
+          return spots + 1;
         }
       };
 
@@ -51,13 +46,7 @@ const reducer = (state, action) => {
         ...state,
         appointments,
         days: state.days.map(day => {
-          if (day.name !== state.day) {
-            return day;
-          }
-          return {
-            ...day,
-            spots: updateSpots(day.spots)
-          };
+          return day.name !== state.day ? day : { ...day, spots: updateSpots(day.spots) };
         })
       };
     }
@@ -95,9 +84,11 @@ const useApplicationData = () => {
       ...state.appointments[id],
       interview: { ...interview }
     };
+    const isEdit = state.appointments[id].interview !== null;
+
     return axios.put(`/api/appointments/${id}`, appointment).then(res => {
       if (res && res.status === 204) {
-        const dispatchValue = { id, interview };
+        const dispatchValue = { id, interview, isEdit };
         dispatch({ type: SET_INTERVIEW, value: dispatchValue });
       }
       return res;
