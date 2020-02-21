@@ -66,7 +66,7 @@ const reducer = (state, action) => {
   }
 };
 
-const useApplicationData = initial => {
+const useApplicationData = () => {
   const initialState = {
     day: "Monday",
     days: [],
