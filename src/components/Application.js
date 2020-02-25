@@ -29,21 +29,19 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        <ul>
-          {appointments.map(appointment => {
-            const interview = getInterview(state, appointment.interview);
-            return (
-              <Appointment
-                {...appointment}
-                key={appointment.id}
-                interview={interview}
-                interviewers={interviewers}
-                bookIntervew={bookInterview}
-                cancelInterview={() => cancelInterview(appointment.id)}
-              />
-            );
-          })}
-        </ul>
+        {appointments.map(appointment => {
+          const interview = getInterview(state, appointment.interview);
+          return (
+            <Appointment
+              {...appointment}
+              key={appointment.id}
+              interview={interview}
+              interviewers={interviewers}
+              bookIntervew={bookInterview}
+              cancelInterview={() => cancelInterview(appointment.id)}
+            />
+          );
+        })}
       </section>
     </main>
   );
