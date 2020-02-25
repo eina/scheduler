@@ -10,7 +10,8 @@ import {
   getAllByTestId,
   getByPlaceholderText,
   getByAltText,
-  queryByText
+  queryByText,
+  queryByAltText
 } from "@testing-library/react";
 
 import Application from "components/Application";
@@ -52,4 +53,38 @@ describe("Application", () => {
 
     expect(getByText(day, /no spots remaining/i)).toBeInTheDocument();
   });
+
+  it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
+    const { container, debug } = render(<Application />);
+
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // find a booked appointment and click the delete button
+    const appointment = getAllByTestId(container, "appointment").find(appointment =>
+      queryByText(appointment, "Archie Cohen")
+    );
+
+    fireEvent.click(queryByAltText(appointment, "Delete"));
+
+    // check if confirm view shows up and click confirm
+    expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
+    fireEvent.click(queryByText(appointment, "Confirm"));
+
+    // check if the Deleting status is displayed
+    expect(getByText(appointment, "Deleting")).toBeInTheDocument();
+
+    // wait and check if the element with add is displayed
+    await waitForElement(() => getByAltText(appointment, "Add"));
+
+    // Check that the DayListItem with the text "Monday" also has the text "2 spots remaining".
+    const day = getAllByTestId(container, "day").find(day => queryByText(day, "Monday"));
+
+    expect(getByText(day, /2 spots remaining/i)).toBeInTheDocument();
+  });
+
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", () => {});
+
+  it("shows the save error when failing to save an appointment", () => {});
+
+  it("shows the delete error when failing to delete an existing appointment", () => {});
 });
