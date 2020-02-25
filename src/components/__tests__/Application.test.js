@@ -5,7 +5,6 @@ import {
   cleanup,
   waitForElement,
   fireEvent,
-  prettyDOM,
   getByText,
   getAllByTestId,
   getByPlaceholderText,
@@ -15,6 +14,8 @@ import {
 } from "@testing-library/react";
 
 import Application from "components/Application";
+
+import axios from "axios";
 
 afterEach(cleanup);
 
@@ -55,7 +56,7 @@ describe("Application", () => {
   });
 
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
-    const { container, debug } = render(<Application />);
+    const { container } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
@@ -83,7 +84,7 @@ describe("Application", () => {
   });
 
   it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
-    const { container, debug } = render(<Application />);
+    const { container } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
@@ -114,7 +115,7 @@ describe("Application", () => {
   });
 
   it("shows the save error when failing to save an appointment", () => {
-    // return null;
+    axios.put.mockRejectedValueOnce();
   });
 
   it("shows the delete error when failing to delete an existing appointment", () => {
