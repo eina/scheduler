@@ -10,7 +10,8 @@ import {
   getByPlaceholderText,
   getByAltText,
   queryByText,
-  queryByAltText
+  queryByAltText,
+  waitForElementToBeRemoved
 } from "@testing-library/react";
 
 import Application from "components/Application";
@@ -132,7 +133,9 @@ describe("Application", () => {
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
     fireEvent.click(getByText(appointment, "Save"));
 
-    await waitForElement(() => axios.put.mockRejectedValueOnce());
+    expect(getByText(appointment, "Saving")).toBeInTheDocument();
+    await waitForElement(() => getByText(appointment, "Saving"));
+
     expect(getByText(appointment, "Could not create appointment")).toBeInTheDocument();
   });
 
@@ -153,7 +156,9 @@ describe("Application", () => {
     expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
     fireEvent.click(queryByText(appointment, "Confirm"));
 
-    await waitForElement(() => axios.delete.mockRejectedValueOnce());
+    expect(getByText(appointment, "Deleting")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() => getByText(appointment, "Deleting"));
 
     expect(getByText(appointment, "Could not delete appointment")).toBeInTheDocument();
   });
