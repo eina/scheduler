@@ -1,59 +1,7 @@
-/*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
-
 import { useReducer, useEffect } from "react";
 import axios from "axios";
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
-
-const reducer = (state, action) => {
-  const { value } = action;
-  switch (action.type) {
-    case SET_DAY:
-      return {
-        ...state,
-        day: value
-      };
-    case SET_APPLICATION_DATA: {
-      return {
-        ...state,
-        ...value
-      };
-    }
-    case SET_INTERVIEW: {
-      const apptID = value.id;
-      const updateSpots = spots => {
-        if (value.interview) {
-          // value.isEdit is only available during create/edit
-          return value.isEdit ? spots : spots - 1;
-        } else {
-          return spots + 1;
-        }
-      };
-
-      const appointment = {
-        ...state.appointments[apptID],
-        interview: value.interview
-      };
-
-      const appointments = {
-        ...state.appointments,
-        [apptID]: appointment
-      };
-
-      return {
-        ...state,
-        appointments,
-        days: state.days.map(day => {
-          return day.name !== state.day ? day : { ...day, spots: updateSpots(day.spots) };
-        })
-      };
-    }
-    default:
-      throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
-  }
-};
+import { SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW, reducer } from "../reducers/application";
 
 const useApplicationData = () => {
   const initialState = {
