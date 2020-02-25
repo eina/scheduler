@@ -82,9 +82,42 @@ describe("Application", () => {
     expect(getByText(day, /2 spots remaining/i)).toBeInTheDocument();
   });
 
-  it("loads data, edits an interview and keeps the spots remaining for Monday the same", () => {});
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+    const { container, debug } = render(<Application />);
 
-  it("shows the save error when failing to save an appointment", () => {});
+    await waitForElement(() => getByText(container, "Archie Cohen"));
 
-  it("shows the delete error when failing to delete an existing appointment", () => {});
+    // find a booked appointment and click the edit button
+    const appointment = getAllByTestId(container, "appointment").find(appointment =>
+      queryByText(appointment, "Archie Cohen")
+    );
+
+    fireEvent.click(queryByAltText(appointment, "Edit"));
+
+    // change the name and save
+    fireEvent.change(getByPlaceholderText(appointment, "Enter Student Name"), {
+      target: {
+        value: "Lydia Miller-Jones"
+      }
+    });
+
+    fireEvent.click(queryByText(appointment, "Save"));
+
+    // check if the Saving status is displayed
+    expect(getByText(appointment, "Saving")).toBeInTheDocument();
+
+    await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
+
+    const day = getAllByTestId(container, "day").find(day => queryByText(day, "Monday"));
+
+    expect(getByText(day, /1 spot remaining/i)).toBeInTheDocument();
+  });
+
+  it("shows the save error when failing to save an appointment", () => {
+    // return null;
+  });
+
+  it("shows the delete error when failing to delete an existing appointment", () => {
+    // return null;
+  });
 });
