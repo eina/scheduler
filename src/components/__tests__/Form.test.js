@@ -43,11 +43,34 @@ describe("Form", () => {
     expect(onSave).not.toHaveBeenCalled();
   });
 
-  it("can successfully save after trying to submit an empty student name", () => {
+  it("validates that there is a selected interviewer", () => {
     const onSave = jest.fn();
-    const { getByText, getByPlaceholderText, queryByText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
+
+    fireEvent.change(getByPlaceholderText("Enter Student Name"), {
+      target: { value: "Lydia Miller-Jones" }
+    });
+
+    // click the save button
+    fireEvent.click(getByText("Save"));
+
+    // validation is shown
+    expect(getByText(/please select an interviewer/i)).toBeInTheDocument();
+
+    // onSave is not called
+    expect(onSave).not.toHaveBeenCalled();
+  });
+
+  it("can successfully save after trying to submit an empty student name", () => {
+    const onSave = jest.fn();
+    const { getByText, getByPlaceholderText, getByAltText, queryByText } = render(
+      <Form interviewers={interviewers} onSave={onSave} />
+    );
+
+    // select interviewer
+    fireEvent.click(getByAltText("Sylvia Palmer"));
 
     fireEvent.click(getByText("Save"));
 
@@ -55,7 +78,9 @@ describe("Form", () => {
     expect(onSave).not.toHaveBeenCalled();
 
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
-      target: { value: "Lydia Miller-Jones" }
+      target: {
+        value: "Lydia Miller-Jones"
+      }
     });
 
     fireEvent.click(getByText("Save"));
@@ -63,7 +88,34 @@ describe("Form", () => {
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
 
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
+  });
+
+  it("can successfully save after trying to submit without selecting an interviewer", () => {
+    const onSave = jest.fn();
+    const { getByText, getByPlaceholderText, getByAltText, queryByText } = render(
+      <Form interviewers={interviewers} onSave={onSave} />
+    );
+
+    fireEvent.change(getByPlaceholderText("Enter Student Name"), {
+      target: {
+        value: "Lydia Miller-Jones"
+      }
+    });
+
+    fireEvent.click(getByText("Save"));
+
+    expect(getByText(/please select an interviewer/i)).toBeInTheDocument();
+    expect(onSave).not.toHaveBeenCalled();
+
+    fireEvent.click(getByAltText("Sylvia Palmer"));
+
+    fireEvent.click(getByText("Save"));
+
+    expect(queryByText(/student name cannot be blank/i)).toBeNull();
+
+    expect(onSave).toHaveBeenCalledTimes(1);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
 
   it("calls onCancel and resets the input field", () => {
