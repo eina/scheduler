@@ -1,9 +1,9 @@
 import React from "react";
 import classNames from "classnames";
-
+import PropTypes from "prop-types";
 import "components/Button.scss";
 
-export default function Button(props) {
+const Button = props => {
   const { disabled, onClick } = props;
   const buttonClass = classNames("button", {
     "button--confirm": props.confirm,
@@ -15,4 +15,11 @@ export default function Button(props) {
       {props.children}
     </button>
   );
-}
+};
+
+Button.propTypes = {
+  disabled: PropTypes.bool,
+  day: PropTypes.func
+};
+
+export default Button;

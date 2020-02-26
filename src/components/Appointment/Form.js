@@ -47,13 +47,14 @@ const Form = props => {
             onChange={e => setName(e.target.value)}
           />
         </form>
+        <section className="appointment__validation">{error}</section>
+        <InterviewerList
+          interviewers={props.interviewers}
+          value={interviewer}
+          onChange={setInterviewer}
+        />
       </section>
-      <section className="appointment__validation">{error}</section>
-      <InterviewerList
-        interviewers={props.interviewers}
-        value={interviewer}
-        onChange={setInterviewer}
-      />
+
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={cancel}>
