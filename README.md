@@ -1,5 +1,7 @@
 # Interview Scheduler
 
+[![CircleCI](https://circleci.com/gh/thelittleblacksmith/scheduler.svg?style=shield)](https://circleci.com/gh/thelittleblacksmith/scheduler)
+
 A single page application made with React and PostgreSQL where users can book an appointment with listed interviewers.
 
 - Live: https://blissful-jackson-ea69c2.netlify.com/
