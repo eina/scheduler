@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+/**
+ * Custom Hook responsible for switching Appointment views
+ * @param {string} initial
+ */
 const useVisualMode = initial => {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);

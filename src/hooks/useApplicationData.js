@@ -3,6 +3,10 @@ import axios from "axios";
 
 import { SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW, reducer } from "../reducers/application";
 
+/**
+ * Custom hooks for application-wide functionalities that
+ * interact with Application's state
+ */
 const useApplicationData = () => {
   const initialState = {
     day: "Monday",
