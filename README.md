@@ -1,5 +1,7 @@
 # Interview Scheduler
 
+View: https://blissful-jackson-ea69c2.netlify.com/
+
 ## Setup
 
 Install dependencies with `npm install`.
